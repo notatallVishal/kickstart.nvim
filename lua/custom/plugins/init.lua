@@ -31,10 +31,10 @@ return {
     end,
   },
   {
-    'mluders/comfy-line-numbers.nvim',
-  },
-  {
     'jbyuki/venn.nvim',
     lazy = false,
+  },
+  {
+    'mluders/comfy-line-numbers.nvim',
   },
 }
