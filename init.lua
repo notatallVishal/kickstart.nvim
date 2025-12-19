@@ -113,29 +113,29 @@ vim.o.virtualedit = 'none'
 -- venn.nvim: enable or disable keymappings
 function _G.Toggle_venn()
   local venn_enabled = vim.inspect(vim.b.venn_enabled)
-  if venn_enabled == "nil" then
+  if venn_enabled == 'nil' then
     vim.b.venn_enabled = true
     vim.cmd [[setlocal ve=all]]
     -- draw a line on HJKL keystokes
-    vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", { noremap = true })
-    vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", { noremap = true })
-    vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", { noremap = true })
-    vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", { noremap = true })
+    vim.api.nvim_buf_set_keymap(0, 'n', 'J', '<C-v>j:VBox<CR>', { noremap = true })
+    vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<C-v>k:VBox<CR>', { noremap = true })
+    vim.api.nvim_buf_set_keymap(0, 'n', 'L', '<C-v>l:VBox<CR>', { noremap = true })
+    vim.api.nvim_buf_set_keymap(0, 'n', 'H', '<C-v>h:VBox<CR>', { noremap = true })
     -- draw a box by pressing "f" with visual selection
-    vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", { noremap = true })
+    vim.api.nvim_buf_set_keymap(0, 'v', 'f', ':VBox<CR>', { noremap = true })
   else
     vim.cmd [[setlocal ve=]]
-    vim.api.nvim_buf_del_keymap(0, "n", "J")
-    vim.api.nvim_buf_del_keymap(0, "n", "K")
-    vim.api.nvim_buf_del_keymap(0, "n", "L")
-    vim.api.nvim_buf_del_keymap(0, "n", "H")
-    vim.api.nvim_buf_del_keymap(0, "v", "f")
+    vim.api.nvim_buf_del_keymap(0, 'n', 'J')
+    vim.api.nvim_buf_del_keymap(0, 'n', 'K')
+    vim.api.nvim_buf_del_keymap(0, 'n', 'L')
+    vim.api.nvim_buf_del_keymap(0, 'n', 'H')
+    vim.api.nvim_buf_del_keymap(0, 'v', 'f')
     vim.b.venn_enabled = nil
   end
 end
 
 -- toggle keymappings for venn using <leader>v
-vim.api.nvim_set_keymap('n', '<leader>v', ":lua Toggle_venn()<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>v', ':lua Toggle_venn()<CR>', { noremap = true })
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -334,7 +334,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -386,6 +386,10 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'otavioschwanck/new-file-template.nvim',
+    opts = {},
+  },
 
   -- NOTE: Plugins can specify dependencies.
   --
@@ -415,7 +419,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -523,7 +527,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim',    opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -707,7 +711,9 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
+        zls = {},
+        svlangserver = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -913,7 +919,45 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = {
+      signs = false,
+      keywords = {
+        fix = {
+          icon = ' ', -- icon used for the sign, and in search results
+          color = 'error', -- can be a hex color, or a named color (see below)
+          alt = { 'fixme', 'bug', 'fixit', 'issue' }, -- a set of other keywords that all map to this FIX keywords
+          -- signs = false, -- configure signs for some keywords individually
+        },
+        todo = { icon = ' ', color = 'info' },
+        hack = { icon = ' ', color = 'warning' },
+        warn = { icon = ' ', color = 'warning', alt = { 'warning', 'XXX' } },
+        perf = { icon = ' ', alt = { 'optim', 'performance', 'optimize' } },
+        note = { icon = ' ', color = 'hint', alt = { 'info' } },
+        test = { icon = '⏲ ', color = 'test', alt = { 'testing', 'passed', 'failed' } },
+        file = { color = 'hint' },
+        module = { color = 'info', alt = { 'fxn' } },
+        type = { color = 'warning', alt = { 'struct', 'enum' } },
+      },
+      gui_style = {
+        fg = 'NONE', -- The gui style to use for the fg highlight group.
+        bg = 'BOLD', -- The gui style to use for the bg highlight group.
+      },
+      highlight = {
+        before = 'bg',
+        keyword = 'wide',
+        after = 'fg',
+        multiline = false,
+        pattern = [[.*<(KEYWORDS)\s*:]], -- pattern or table of patterns, used for highlighting (vim regex)
+      },
+      search = {
+        pattern = [[\b@(KEYWORDS):]], -- ripgrep regex
+      },
+    },
+  },
 
   -- Flash for easy movement
   {
