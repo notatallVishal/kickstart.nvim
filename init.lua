@@ -334,7 +334,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -419,7 +419,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -527,7 +527,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',    opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -918,13 +918,13 @@ require('lazy').setup({
     },
   },
 
-  -- Highlight todo, notes, etc in comments
+  -- -- Highlight todo, notes, etc in comments
   {
     'folke/todo-comments.nvim',
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = {
-      signs = false,
+      signs = true,
       keywords = {
         fix = {
           icon = ' ', -- icon used for the sign, and in search results
@@ -938,9 +938,10 @@ require('lazy').setup({
         perf = { icon = ' ', alt = { 'optim', 'performance', 'optimize' } },
         note = { icon = ' ', color = 'hint', alt = { 'info' } },
         test = { icon = '⏲ ', color = 'test', alt = { 'testing', 'passed', 'failed' } },
-        file = { color = 'hint' },
+        file = { icon = '', color = 'hint' },
         module = { color = 'info', alt = { 'fxn' } },
         type = { color = 'warning', alt = { 'struct', 'enum' } },
+        math = { icon = '󰿈', color = 'warning', alt = { 'complexity', 'bigO' } },
       },
       gui_style = {
         fg = 'NONE', -- The gui style to use for the fg highlight group.
@@ -951,13 +952,11 @@ require('lazy').setup({
         keyword = 'wide',
         after = 'fg',
         multiline = false,
-        pattern = [[.*<(KEYWORDS)\s*:]], -- pattern or table of patterns, used for highlighting (vim regex)
-      },
-      search = {
-        pattern = [[\b@(KEYWORDS):]], -- ripgrep regex
+        pattern = [[.*<(KEYWORDS).*:]], -- pattern or table of patterns, used for highlighting (vim regex)
       },
     },
   },
+
 
   -- Flash for easy movement
   {
@@ -980,7 +979,6 @@ require('lazy').setup({
     opts = {
       -- your configuration comes here
       -- or leave it empty to use the default settings
-      -- refer to the configuration section below
     },
   },
 
