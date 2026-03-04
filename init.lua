@@ -137,6 +137,9 @@ end
 -- toggle keymappings for venn using <leader>v
 vim.api.nvim_set_keymap('n', '<leader>v', ':lua Toggle_venn()<CR>', { noremap = true })
 
+vim.api.nvim_set_keymap('n', '<leader>x', ':%!xxd<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>X', ':%!xxd -r<CR>', { noremap = true })
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -334,9 +337,9 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  {                     -- Useful plugin to show you pending keybinds.
+  {                         -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
-    event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+    event = 'VimEnter',     -- Sets the loading event to 'VimEnter'
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.o.timeoutlen
@@ -387,7 +390,13 @@ require('lazy').setup({
     },
   },
   {
-    'otavioschwanck/new-file-template.nvim',
+    "jla2000/lazydocs.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "L3MON4D3/LuaSnip",
+      "nvimtools/none-ls.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
     opts = {},
   },
 
